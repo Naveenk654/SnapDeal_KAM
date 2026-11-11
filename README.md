@@ -6,6 +6,13 @@ Built for the **Snapdeal AI First Intern Assignment** by **Naveen**.
 
 ---
 
+## 🌐 Live Production Demo
+
+👉 **[https://snapdealkam.up.railway.app](https://snapdealkam.up.railway.app)**  
+*(Best experienced in Google Chrome for browser-native speech recognition & voice synthesis)*
+
+---
+
 ## 🌟 Key Features
 
 - **Fullstack Production Architecture:** Express backend holds API keys securely server-side; ready for 1-click deployment on Railway / Render / Docker.

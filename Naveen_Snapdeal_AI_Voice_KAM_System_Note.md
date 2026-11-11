@@ -3,6 +3,8 @@
 **Role:** AI First Intern — Practical Assignment  
 **Project:** Mini AI Voice Key Account Manager (Virtual KAM)  
 **Candidate Name:** Naveen  
+**Live Production Demo:** [https://snapdealkam.up.railway.app](https://snapdealkam.up.railway.app)  
+**GitHub Repository:** [https://github.com/Naveenk654/SnapDeal_KAM](https://github.com/Naveenk654/SnapDeal_KAM)  
 **Submission Date:** November 2026  
 
 ---
