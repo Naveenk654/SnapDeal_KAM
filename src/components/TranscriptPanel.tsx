@@ -21,12 +21,19 @@ export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({
   onSendMessage,
   onInterrupt,
 }) => {
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [inputText, setInputText] = useState("");
 
+  // Only scroll the internal transcript container when a new message is committed.
+  // NEVER scroll the outer browser window!
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, currentTranscript]);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,7 +93,7 @@ export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({
       </div>
 
       {/* Message list */}
-      <div className="flex-1 overflow-y-auto my-3 space-y-3.5 pr-1 min-h-[260px] max-h-[380px]">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto my-3 space-y-3.5 pr-1 min-h-[260px] max-h-[380px]">
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center text-center p-8 text-gray-400">
             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-xl mb-2">
@@ -200,8 +207,6 @@ export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({
             </button>
           </div>
         )}
-
-        <div ref={bottomRef} />
       </div>
 
       {/* Quick Clickable Script Chips (Directly accessible in call — no tab switching) */}
