@@ -6,3 +6,4 @@ cmds = ["node scripts/build.js"]
 
 [start]
 cmd = "node server/index.js"
+

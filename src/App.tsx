@@ -4,12 +4,11 @@
 // ============================================================
 
 import React, { useState, useEffect } from "react";
-import type { ApiKeys, SellerData } from "./types";
+import type { SellerData } from "./types";
 import { SELLER_PROFILES } from "./data/sellerData";
 import { useVoiceKAM } from "./hooks/useVoiceKAM";
 import { getServerConfig } from "./services/apiClient";
 import { Header } from "./components/Header";
-import { SetupScreen } from "./components/SetupScreen";
 import { VoiceInterface } from "./components/VoiceInterface";
 import { SellerDashboard } from "./components/SellerDashboard";
 import { ClassificationPanel } from "./components/ClassificationPanel";
@@ -18,50 +17,24 @@ import { SummaryCard } from "./components/SummaryCard";
 import { SellerEditorModal } from "./components/SellerEditorModal";
 
 export const App: React.FC = () => {
-  const [keys, setKeys] = useState<ApiKeys | null>(() => {
-    const saved = localStorage.getItem("snapdeal_kam_keys");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return null;
-      }
-    }
-    const envGemini = (import.meta as any).env?.VITE_GEMINI_API_KEY;
-    const envJev = (import.meta as any).env?.VITE_JEV_API_KEY;
-    if (envGemini) {
-      return {
-        geminiApiKey: envGemini,
-        jevApiKey: envJev || "",
-      };
-    }
-    return null;
-  });
-
-  const [serverHasKey, setServerHasKey] = useState<boolean>(false);
-  const [serverHasJevKey, setServerHasJevKey] = useState<boolean>(false);
+  const [serverHasKey, setServerHasKey] = useState<boolean>(true);
+  const [serverHasJevKey, setServerHasJevKey] = useState<boolean>(true);
   const [activeSeller, setActiveSeller] = useState<SellerData>(SELLER_PROFILES[0]);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [state, actions] = useVoiceKAM();
 
-  // Check if backend already has keys configured (via server .env or Railway)
+  // Initialize voice services and check backend status
   useEffect(() => {
+    actions.initialize();
+    actions.updateSellerData(activeSeller);
+
     getServerConfig().then((cfg) => {
       if (cfg?.hasGeminiKey) {
         setServerHasKey(true);
         setServerHasJevKey(cfg.hasJevKey);
-        actions.initialize();
-        actions.updateSellerData(activeSeller);
       }
     });
   }, [actions, activeSeller]);
-
-  useEffect(() => {
-    if (keys) {
-      actions.initialize(keys);
-      actions.updateSellerData(activeSeller);
-    }
-  }, [keys, actions, activeSeller]);
 
   // When summary is generated, smoothly bring it into view without leaving the call
   useEffect(() => {
@@ -73,29 +46,10 @@ export const App: React.FC = () => {
     }
   }, [state.summary]);
 
-  const handleSetup = (newKeys: ApiKeys) => {
-    localStorage.setItem("snapdeal_kam_keys", JSON.stringify(newKeys));
-    setKeys(newKeys);
-    actions.initialize(newKeys);
-    actions.updateSellerData(activeSeller);
-  };
-
   const handleSellerChange = (newData: SellerData) => {
     setActiveSeller(newData);
     actions.updateSellerData(newData);
   };
-
-  // If no server keys and no browser keys, prompt setup
-  if (!keys && !serverHasKey) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center p-4">
-          <SetupScreen onSetup={handleSetup} />
-        </main>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-gray-900">
@@ -189,7 +143,7 @@ export const App: React.FC = () => {
 
             <ClassificationPanel
               analysis={state.jevAnalysis}
-              hasJevKey={Boolean(keys?.jevApiKey || serverHasJevKey)}
+              hasJevKey={Boolean(serverHasJevKey)}
             />
           </div>
 
