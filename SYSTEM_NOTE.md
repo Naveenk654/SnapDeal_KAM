@@ -68,9 +68,25 @@ When a seller calls expressing concern over declining sales (*"My sales have dro
 
 ---
 
-## 3. Dynamic Multi-Seller Telemetry Engine
+## 3. Dynamic Multi-Seller Telemetry Engine & Stated Assumptions
 
-To demonstrate production scalability beyond the single assignment benchmark, the platform includes a **Generalized Telemetry Engine** supporting:
+### A. Core Benchmark Telemetry & Stated Assumptions (Assignment Section 4)
+The primary scenario strictly adopts the mock telemetry provided in Section 4 of the assignment brief:
+- **Sales:** ₹2,00,000 → ₹1,35,000 (↓32.5% contraction)
+- **Orders:** 400 → 270 (↓32.5% volume decline)
+- **Cancellation Rate:** 8% → 14% (↑75.0% surge)
+- **Average Selling Price (ASP):** ₹500 → ₹500 (flat, unchanged)
+- **Out-of-Stock SKUs:** 5 → 18 items (↑260.0% spike)
+
+**Explicit Assumptions Added (per Section 4 allowance):**
+1. **Financial Run-Rate Impact (~₹65,000 lost):** Calculated by modeling the 13 new stockouts against historical baseline revenue contribution (~₹5,000/month per active SKU in a ~40-product catalog).
+2. **Cancellation Loss (~₹18,900 lost):** Derived as 270 orders × ₹500 ASP × 14% cancellation rate.
+3. **Algorithmic Search Suppression Threshold (>8–10%):** Marketplace algorithms down-rank listings with cancellation rates above 8–10% to protect customer satisfaction, compounding the drop from inventory shortages.
+4. **Price Inelasticity:** Constant ASP confirms buyers who found in-stock items purchased at full price. Slashing prices is assumed to be counter-productive (erodes margins without fixing stockouts).
+5. **Hero SKU Prioritization (80/20 Rule):** The top 20% highest-velocity apparel SKUs (Rayon Kurtis, Denims, Georgette Sarees) drive 80% of volume and are prioritized for 48-hour emergency restocking.
+
+### B. Demonstrated Engine Generalization (Multi-Scenario Testing)
+To demonstrate production scalability beyond the single benchmark, the platform includes:
 
 1. **Benchmark Scenario: SD-FashionHub (Assignment Mock Data)**
    - Sales: ₹2,00,000 → ₹1,35,000 (↓32.5%)

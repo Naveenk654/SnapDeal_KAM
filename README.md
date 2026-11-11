@@ -50,6 +50,33 @@ Built for the **Snapdeal AI First Intern Assignment** by **Naveen**.
 
 ---
 
+## 📊 Sample Seller Data & Stated Assumptions (Assignment Section 4)
+
+The assignment provides the following benchmark mock telemetry for the core diagnostic scenario:
+
+| Metric | Last Month | This Month | MoM Delta | Status |
+|---|---|---|---|---|
+| **Monthly Revenue** | ₹2,00,000 | ₹1,35,000 | **↓ 32.5%** | Severe top-line contraction |
+| **Completed Orders** | 400 | 270 | **↓ 32.5%** | Volume decline proportional to sales |
+| **Cancellation Rate** | 8.0% | 14.0% | **↑ 75.0%** | Critical algorithmic penalty zone |
+| **Average Selling Price (ASP)** | ₹500 | ₹500 | **0.0% (Constant)** | Rules out price elasticity/resistance |
+| **Out-of-Stock SKUs** | 5 | 18 | **↑ 260.0%** | Primary root cause (13 key styles lost) |
+
+### 📌 Stated Assumptions (As explicitly permitted in Section 4):
+1. **Financial Loss Modeling:**
+   - **Stockout Loss (~₹65,000/month):** Based on historical catalog contribution (~₹5,000/month per core SKU in a ~40-product active catalog), the 13 newly depleted SKUs account for roughly ₹65,000 in uncaptured monthly run-rate.
+   - **Cancellation Loss (~₹18,900/month):** 270 orders × ₹500 ASP × 14% cancellation rate = ₹18,900 lost directly from unfulfilled orders.
+2. **Marketplace Search Algorithm Ranking:**
+   - Snapdeal's catalog search algorithms penalize listings with cancellation rates exceeding 8–10% to protect customer satisfaction. The surge from 8% to 14% explains the secondary loss in listing search impressions.
+3. **Price Inelasticity (Ruling Out Price Cuts):**
+   - Because ASP remained perfectly constant at ₹500 across both months, buyers who found in-stock items converted at full price. Slashing prices is assumed to be counter-productive (destroys margins without resolving inventory shortages).
+4. **Hero SKU 80/20 Rule:**
+   - The top 20% highest-velocity apparel SKUs (Embroidered Rayon Kurtis, Men's Slim-Fit Denims, Casual Slip-on Footwear) drive 80% of volume and are prioritized for 48-hour emergency restocking.
+5. **Multi-Seller Generalization:**
+   - The default scenario (`SD-FashionHub`) represents the exact assignment mock data. Two additional comparative profiles (`SD-TechGizmos` and `SD-HomeDecor`) and an interactive `Custom Data Editor` are provided to prove the AI engine generalizes dynamically across different metrics without hardcoded scripts.
+
+---
+
 ## 🚀 Running Locally
 
 1. Install dependencies:
